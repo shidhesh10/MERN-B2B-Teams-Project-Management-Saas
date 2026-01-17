@@ -33,7 +33,7 @@ const SignIn = () => {
 
   const {mutate, isPending} = useMutation({
     mutationFn: loginMutationFn,
-  })
+  });
 
   const formSchema = z.object({
     email: z.string().trim().email("Invalid email address").min(1, {
@@ -58,8 +58,8 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (data) => {
           const user = data.user;
+          console.log(user);
           const decodeUrl = returnUrl ? decodeURIComponent(returnUrl) : null ;
-
           navigate(decodeUrl || `/workspace/${user.currentWorkspace}`);
       },
       onError: (error) => {
