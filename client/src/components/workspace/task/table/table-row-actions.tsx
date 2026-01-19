@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Row } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -8,11 +8,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
 import { TaskType } from "@/types/api.type";
+import useWorkspaceId from "@/hooks/use-workspace-id";
+import useDeleteTask from "@/hooks/api/use-delete-task";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
@@ -20,11 +21,22 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const [openDeleteDialog, setOpenDialog] = useState(false);
+  const workspaceId = useWorkspaceId();
+  const { mutate, isPending } = useDeleteTask();
 
-  const taskId = row.original._id as string;
+  const taskId = row.original._id;
   const taskCode = row.original.taskCode;
 
-  const handleConfirm = () => {};
+  const handleConfirm = () => {
+    mutate(
+      { workspaceId, taskId },
+      {
+        onSuccess: () => {
+          setOpenDialog(false);
+        },
+      }
+    );
+  };
 
   return (
     <>
@@ -34,32 +46,35 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
             variant="ghost"
             className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
           >
-            <MoreHorizontal />
+            <MoreHorizontal className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem className="cursor-pointer">
+            <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Edit Task
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          
+          {/* Optional: Wrap with PermissionsGuard if you want to hide it for non-admins */}
           <DropdownMenuItem
-            className={`!text-destructive cursor-pointer ${taskId}`}
+            className="text-destructive focus:text-destructive cursor-pointer"
             onClick={() => setOpenDialog(true)}
           >
+            <Trash className="mr-2 h-3.5 w-3.5" />
             Delete Task
-            <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       <ConfirmDialog
         isOpen={openDeleteDialog}
-        isLoading={false}
+        isLoading={isPending}
         onClose={() => setOpenDialog(false)}
         onConfirm={handleConfirm}
         title="Delete Task"
-        description={`Are you sure you want to delete ${taskCode}`}
+        description={`Are you sure you want to delete task ${taskCode}? This action cannot be undone.`}
         confirmText="Delete"
         cancelText="Cancel"
       />
