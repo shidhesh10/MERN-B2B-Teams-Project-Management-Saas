@@ -31,8 +31,8 @@ const taskSchema = new Schema<TaskDocument>({
     },
     description: {
         type: String,
-        required: true,
-        default: null,
+        required: false,
+        default: "",
     },
     project: {
         type: Schema.Types.ObjectId,
