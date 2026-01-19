@@ -14,25 +14,29 @@ import { ConfirmDialog } from "@/components/resuable/confirm-dialog";
 import { TaskType } from "@/types/api.type";
 import useWorkspaceId from "@/hooks/use-workspace-id";
 import useDeleteTask from "@/hooks/api/use-delete-task";
+import EditTaskDialog from "../edit-task-dialog";
 
 interface DataTableRowActionsProps {
   row: Row<TaskType>;
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
-  const [openDeleteDialog, setOpenDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false); //
+  
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useDeleteTask();
 
-  const taskId = row.original._id;
-  const taskCode = row.original.taskCode;
+  const task = row.original;
+  const taskId = task._id;
+  const taskCode = task.taskCode;
 
   const handleConfirm = () => {
     mutate(
       { workspaceId, taskId },
       {
         onSuccess: () => {
-          setOpenDialog(false);
+          setOpenDeleteDialog(false);
         },
       }
     );
@@ -51,16 +55,24 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem 
+            className="cursor-pointer"
+            onClick={(e) => {
+                e.stopPropagation();
+                setOpenEditDialog(true);
+            }}
+          >
             <Pencil className="mr-2 h-3.5 w-3.5 text-muted-foreground/70" />
             Edit Task
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           
-          {/* Optional: Wrap with PermissionsGuard if you want to hide it for non-admins */}
           <DropdownMenuItem
             className="text-destructive focus:text-destructive cursor-pointer"
-            onClick={() => setOpenDialog(true)}
+            onClick={(e) => {
+                e.stopPropagation();
+                setOpenDeleteDialog(true);
+            }}
           >
             <Trash className="mr-2 h-3.5 w-3.5" />
             Delete Task
@@ -71,12 +83,18 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       <ConfirmDialog
         isOpen={openDeleteDialog}
         isLoading={isPending}
-        onClose={() => setOpenDialog(false)}
+        onClose={() => setOpenDeleteDialog(false)}
         onConfirm={handleConfirm}
         title="Delete Task"
         description={`Are you sure you want to delete task ${taskCode}? This action cannot be undone.`}
         confirmText="Delete"
         cancelText="Cancel"
+      />
+
+      <EditTaskDialog 
+        isOpen={openEditDialog}
+        onClose={() => setOpenEditDialog(false)}
+        task={task}
       />
     </>
   );
