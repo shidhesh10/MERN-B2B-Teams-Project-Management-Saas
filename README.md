@@ -1,6 +1,6 @@
 # TeamSync | Advanced B2B Project Management SaaS
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 ![Node](https://img.shields.io/badge/node-v18%2B-green.svg)
 ![React](https://img.shields.io/badge/react-v18-blue.svg)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4.4%2B-green.svg)
