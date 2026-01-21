@@ -21,17 +21,17 @@ import {
 import { Input } from "@/components/ui/input";
 import Logo from "@/components/logo";
 import GoogleOauthButton from "@/components/auth/google-oauth-button";
-import { registerMutationFn } from "@/lib/api";
 import { useMutation } from "@tanstack/react-query";
+import { registerMutationFn } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 import { Loader } from "lucide-react";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const {mutate, isPending} = useMutation({
-      mutationFn: registerMutationFn,
-    });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: registerMutationFn,
+  });
   const formSchema = z.object({
     name: z.string().trim().min(1, {
       message: "Name is required",
@@ -167,9 +167,11 @@ const SignUp = () => {
                           )}
                         />
                       </div>
-                      <Button type="submit" 
-                      disabled={isPending}
-                      className="w-full">
+                      <Button
+                        type="submit"
+                        disabled={isPending}
+                        className="w-full"
+                      >
                         {isPending && <Loader className="animate-spin" />}
                         Sign up
                       </Button>

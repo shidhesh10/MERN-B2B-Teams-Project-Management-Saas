@@ -7,9 +7,9 @@ const useEditTask = () => {
 
   const mutation = useMutation({
     mutationFn: editTaskMutationFn,
-    onSuccess: ( data) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["all-tasks", data.workspaceId],
+        queryKey: ["all-tasks", variables.workspaceId],
       });
       
       queryClient.invalidateQueries({

@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const workspace = workspaceData?.workspace;
 
-  console.log(workspaceError, "workspaceError");
+  //console.log(workspaceError, "workspaceError");
 
   useEffect(() => {
     if(workspaceError) {

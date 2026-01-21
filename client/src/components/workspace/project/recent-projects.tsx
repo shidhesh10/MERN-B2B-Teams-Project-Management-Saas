@@ -21,7 +21,7 @@ const RecentProjects = () => {
   return (
     <div className="flex flex-col pt-2">
       {isPending ? (
-        <Loader className="w-8 h-8 aniamte-spin place-self-center flex" />
+        <Loader className="w-8 h-8 animate-spin place-self-center flex" />
       ) : null}
 
       {projects?.length === 0 && (
