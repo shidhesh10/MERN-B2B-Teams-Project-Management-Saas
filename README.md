@@ -22,7 +22,6 @@
 - [How to Use](#-how-to-use)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
