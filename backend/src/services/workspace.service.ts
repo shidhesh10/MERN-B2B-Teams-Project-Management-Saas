@@ -206,16 +206,6 @@ export const deleteWorkspaceService = async(
       throw new NotFoundException("Workspace not found")
     }
 
-    // --- PASTE THIS BLOCK START ---
-    console.log("---------------- DEBUGGING OWNERSHIP ----------------");
-    console.log("1. Workspace ID:", workspace._id);
-    console.log("2. Owner ID in DB:", workspace.owner);
-    console.log("3. Owner ID Type:", typeof workspace.owner);
-    console.log("4. Logged In User ID:", userId);
-    console.log("5. User ID Type:", typeof userId);
-    console.log("-----------------------------------------------------");
-    // --- PASTE THIS BLOCK END ---
-
     // Check if the user owns the workspace
     if (workspace.owner.toString() !== userId.toString()) {
       throw new BadRequestException("You are not authorized to delete this workspace")
