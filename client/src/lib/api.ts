@@ -54,7 +54,7 @@ async (workspaceId: string): Promise<{
   message: string;
   currentWorkspace: string;
 }> => {
-  const response = await API.delete(`workspace/delete/${workspaceId}/`)
+  const response = await API.delete(`workspace/delete/${workspaceId}`)
   return response.data ;
 };
 
