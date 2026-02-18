@@ -57,7 +57,7 @@
 | **Frontend** | React.js, Vite, TypeScript, TailwindCSS, Shadcn UI |
 | **Database** | MongoDB, Mongoose |
 | **Auth** | Passport.js, Google OAuth 2.0 |
-| **Deployment** | Vercel (Frontend), Render/Railway (Backend) |
+| **Deployment** | Vercel (Frontend), Render (Backend) |
 
 ---
 
